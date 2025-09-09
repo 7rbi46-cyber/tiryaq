@@ -1,0 +1,10 @@
+# Query: tiryaq-logo.png
+# ContextLines: 1
+
+1 result - 1 file
+
+components\Navbar.js:
+  8          <Link href="/" className="flex items-center gap-2">
+  9:           <Image src="/tiryaq-logo.jpg
+" alt="Tiryaq" width={36} height={36} />
+  10            <span className="font-semibold text-white">Tiryaq</span>
