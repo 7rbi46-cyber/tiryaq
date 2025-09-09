@@ -1,49 +1,46 @@
-/* ===== Tailwind layers ===== */
+/* ===== Tailwind (v4) ===== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ===== هوية Tiryaq (ألوان ومتغيرات عامة) ===== */
+/* ===== هوية Tiryaq ===== */
 :root{
-  --tq-primary: #7c1f3c;   /* قرمزي تِرياق */
-  --tq-nile:    #1f3a5f;   /* أزرق نيلي */
-  --tq-sand:    #f4e7c6;   /* ذهبي/رملي */
-  --tq-bg:      #f9fafb;   /* خلفية فاتحة */
-  --tq-text:    #1f2937;   /* رمادي داكن */
+  --tq-primary:#7c1f3c;  /* قرمزي */
+  --tq-nile:#1f3a5f;     /* نيلي */
+  --tq-sand:#f4e7c6;     /* رملي */
+  --tq-bg:#f9fafb;       /* خلفية */
+  --tq-text:#1f2937;     /* نص */
 }
 
-/* ===== Reset خفيف ===== */
-*{ box-sizing: border-box; margin: 0; padding: 0; }
-html, body{ height: 100%; }
+/* Reset خفيف */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 body{
-  font-family: Arial, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--tq-bg);
-  color: var(--tq-text);
-  line-height: 1.6;
+  font-family: Arial,"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+  background:var(--tq-bg);
+  color:var(--tq-text);
+  line-height:1.6;
 }
 
-/* روابط عامة */
-a{ color: var(--tq-primary); text-decoration: none; transition: 0.2s; }
-a:hover{ opacity: .85; }
+/* روابط وعناوين */
+a{color:var(--tq-primary);text-decoration:none;transition:.2s}
+a:hover{opacity:.85}
+h1,h2,h3,h4,h5,h6{color:var(--tq-primary);font-weight:700}
 
-/* عناوين */
-h1,h2,h3,h4,h5,h6{ color: var(--tq-primary); font-weight: 700; }
+/* RTL عند إضافة class="rtl" على <body> */
+body.rtl{direction:rtl}
+body.rtl .space-x-6 > * + *{margin-right:1.5rem;margin-left:0}
 
-/* دعم العربية RTL عند إضافة class="rtl" على <body> */
-body.rtl{ direction: rtl; }
-body.rtl .space-x-6 > * + * { margin-right: 1.5rem; margin-left: 0; } /* قلب مسافات tailwind */
-
-/* حاوية قياسية */
-.container{
-  @apply max-w-7xl mx-auto px-4 sm:px-6;
+/* حاوية قياسية بدون استخدام sm: داخل @apply (v4) */
+.container{ @apply max-w-7xl mx-auto px-4; }
+@media (min-width:640px){
+  .container{ padding-left:1.5rem; padding-right:1.5rem; } /* px-6 */
 }
 
-/* بطاقات بسيطة قابلة لإعادة الاستخدام */
-.card{
-  @apply rounded-2xl border bg-white p-5 shadow-sm;
-}
+/* بطاقات قابلة لإعادة الاستخدام */
+.card{ @apply rounded-2xl border bg-white p-5 shadow-sm; }
 
-/* Typography (لو فعّلت @tailwindcss/typography) */
-.prose-tiryaq{
-  @apply prose max-w-none prose-headings:text-[var(--tq-primary)] prose-a:text-[var(--tq-primary)];
-}
+/* (اختياري) إن كنت فعّلت @tailwindcss/typography */
+.prose-tiryaq{ @apply prose max-w-none; }
+.prose-tiryaq :where(h1,h2,h3,h4){ color:var(--tq-primary); }
+.prose-tiryaq a{ color:var(--tq-primary); }

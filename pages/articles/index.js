@@ -6,18 +6,34 @@ import { useMemo, useState } from "react";
 
 export async function getStaticProps(){
   const dir = path.join(process.cwd(), "content", "articles");
-  const files = fs.readdirSync(dir).filter(f => f.endsWith(".md"));
+  const files = fs.existsSync(dir)
+    ? fs.readdirSync(dir).filter(f => f.endsWith(".md"))
+    : [];
+
   const articles = files.map((fname)=>{
     const raw = fs.readFileSync(path.join(dir, fname), "utf8");
     const { data } = matter(raw);
+
+    // تاریخ كـ نص JSON-safe
+    let dateStr = null;
+    if (data?.date) {
+      if (typeof data.date === "string") {
+        dateStr = data.date;            // مثال: "2025-09-01"
+      } else {
+        const d = new Date(data.date);
+        dateStr = isNaN(d) ? null : d.toISOString().slice(0,10); // YYYY-MM-DD
+      }
+    }
+
     return {
       slug: data.slug,
       title: data.title,
       tag: data.tag || "ARTICLE",
       summary: data.summary || "",
-      date: data.date || null,
+      date: dateStr,
     };
-  }).sort((a,b)=> (b.date||"").localeCompare(a.date||""));
+  }).sort((a,b)=> (b.date || "").localeCompare(a.date || ""));
+
   return { props: { articles } };
 }
 
@@ -50,12 +66,13 @@ export default function Articles({ articles }){
             <div className="text-xs text-slate-500 uppercase">{a.tag}</div>
             <h3 className="font-semibold mt-1">{a.title}</h3>
             <p className="text-sm text-slate-600 mt-1">{a.summary}</p>
+            {a.date && <div className="text-xs text-slate-400 mt-1">{a.date}</div>}
             <Link className="text-sm underline underline-offset-4 mt-2 inline-block" href={`/articles/${a.slug}`}>
               Read
             </Link>
           </article>
         ))}
-        {list.length===0 && <div className="text-sm text-slate-500">No results.</div>}
+        {list.length === 0 && <div className="text-sm text-slate-500">No results.</div>}
       </div>
     </div>
   );
